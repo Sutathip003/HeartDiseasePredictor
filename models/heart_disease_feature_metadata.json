@@ -1,0 +1,55 @@
+{
+  "version": "v1.0",
+  "created_at": "2026-04-22T15:21:23.530235",
+  "target_column": "target",
+  "dropped_columns": [
+    "id",
+    "num"
+  ],
+  "numeric_features": [
+    "age",
+    "trestbps",
+    "chol",
+    "thalch",
+    "oldpeak"
+  ],
+  "binary_features": [
+    "sex",
+    "fbs",
+    "exang"
+  ],
+  "nominal_features": [
+    "dataset"
+  ],
+  "ordinal_features": [
+    "cp",
+    "restecg"
+  ],
+  "rows": 920,
+  "column_feature_count": 14,
+  "prepared_feature_names": [
+    "num__age",
+    "num__trestbps",
+    "num__chol",
+    "num__thalch",
+    "num__oldpeak",
+    "binary__sex",
+    "binary__fbs",
+    "binary__exang",
+    "nominal__dataset_Cleveland",
+    "nominal__dataset_Hungary",
+    "nominal__dataset_Switzerland",
+    "nominal__dataset_VA Long Beach",
+    "ordinal__cp",
+    "ordinal__restecg"
+  ],
+  "feature_preparation_notes": [
+    "Dropped id because it is an identifier, not a medical predictor.",
+    "Dropped num because the binary target already captures the diagnosis outcome.",
+    "Scaled numeric features to make linear models more stable and comparable.",
+    "Preserved binary features as-is for interpretability.",
+    "One-hot encoded nominal features (dataset) to avoid artificial order.",
+    "Ordinal encoded ordinal clinical values (cp, restecg, slope, thal) to keep ordinal semantics.",
+    "Did not create extra derived clinical features to avoid over-engineering."
+  ]
+}

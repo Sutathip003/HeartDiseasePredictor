@@ -1,0 +1,31 @@
+heart_project/
+|-- AGENTS.md
+|-- README.md
+|-- requirements.txt
+|-- .gitignore
+|-- app/
+|   |-- app.py
+|-- data/
+|   |-- raw/
+|   |   |-- heart_disease_uci.csv
+|   |-- processed/
+|   |   |-- heart_clean.csv
+|-- models/
+|   |-- heart_model.pkl
+|   |-- model_results.json
+|-- notebooks/
+|   |-- 01_eda.ipynb
+|-- reports/
+|   |-- figures/
+|-- src/
+|   |-- __init__.py
+|   |-- data/
+|   |   |-- make_dataset.py
+|   |-- features/
+|   |   |-- build_features.py
+|   |-- models/
+|   |   |-- train_model.py
+|   |   |-- predict_model.py
+|   |-- utils/
+|-- tests/
+|   |-- test_pipeline.py

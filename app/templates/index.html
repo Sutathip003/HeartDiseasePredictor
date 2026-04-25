@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Heart Disease Predictor</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div>
+        <h1>Heart Disease Predictor</h1>
+        <p class="subtitle">Educational screening support for heart disease risk prediction.</p>
+      </div>
+      <div class="metric-row">
+        <div class="metric-pill">
+          <div class="metric-label">Recall</div>
+          <div class="metric-value">{{ model_recall }}%</div>
+        </div>
+        <div class="metric-pill">
+          <div class="metric-label">Precision</div>
+          <div class="metric-value">{{ model_precision }}%</div>
+        </div>
+      </div>
+    </header>
+
+    <form method="post" id="prediction-form">
+      <div class="form-grid">
+        <section class="panel personal-panel">
+          <h2 class="section-title">Personal Information</h2>
+          {% for name, input_type in personal_fields %}
+            <div class="field">
+              <label for="{{ name }}">{{ field_labels[name] }}</label>
+              {% if input_type == "select" %}
+                <select name="{{ name }}" id="{{ name }}" required>
+                  <option value="" disabled selected>Select {{ field_labels[name].lower() }}</option>
+                  {% for option in select_options[name] %}
+                    <option value="{{ option }}">{{ option }}</option>
+                  {% endfor %}
+                </select>
+              {% else %}
+                <input
+                  type="{{ input_type }}"
+                  name="{{ name }}"
+                  id="{{ name }}"
+                  placeholder="Enter {{ field_labels[name].lower() }}"
+                  {% for attr_name, attr_value in input_attributes.get(name, {}).items() %}
+                    {{ attr_name }}="{{ attr_value }}"
+                  {% endfor %}
+                  required
+                >
+              {% endif %}
+            </div>
+          {% endfor %}
+        </section>
+
+        <section class="panel clinical-panel">
+          <h2 class="section-title">Clinical Information</h2>
+          {% for name, input_type in clinical_fields %}
+            <div class="field">
+              <label for="{{ name }}">{{ field_labels[name] }}</label>
+              {% if input_type == "select" %}
+                <select name="{{ name }}" id="{{ name }}" required>
+                  <option value="" disabled selected>Select {{ field_labels[name].lower() }}</option>
+                  {% for option in select_options[name] %}
+                    <option value="{{ option }}">{{ option }}</option>
+                  {% endfor %}
+                </select>
+              {% else %}
+                <input
+                  type="{{ input_type }}"
+                  name="{{ name }}"
+                  id="{{ name }}"
+                  placeholder="Enter {{ field_labels[name].lower() }}"
+                  {% for attr_name, attr_value in input_attributes.get(name, {}).items() %}
+                    {{ attr_name }}="{{ attr_value }}"
+                  {% endfor %}
+                  required
+                >
+              {% endif %}
+            </div>
+          {% endfor %}
+        </section>
+
+        <aside class="panel reference-panel">
+          <h2 class="section-title">Reference Values</h2>
+          {% for name, _ in clinical_fields %}
+            <div class="range-row">
+              <span class="range-value">{{ normal_ranges[name] }}</span>
+            </div>
+          {% endfor %}
+        </aside>
+      </div>
+
+      <div class="actions-row">
+        <div class="actions">
+          <button type="submit">Predict</button>
+        </div>
+      </div>
+    </form>
+
+    {% if result %}
+      <div class="modal-backdrop" id="result-modal">
+        <section class="modal-card result" role="dialog" aria-modal="true" aria-labelledby="result-modal-title">
+          <div class="modal-header">
+            <h2 id="result-modal-title">Prediction Result</h2>
+            <button type="button" class="modal-close" aria-label="Close result" onclick="closeResultModal()">x</button>
+          </div>
+          <div class="modal-body">
+            <div class="result-grid">
+              <div class="result-stat">
+                <div class="stat-label">Prediction</div>
+                <div class="stat-value">{{ result.label }}</div>
+              </div>
+              <div class="result-stat">
+                <div class="stat-label">Disease Probability</div>
+                <div class="stat-value">{{ '%.0f' % (result.probability * 100) }}%</div>
+              </div>
+            </div>
+            {% if result.prediction == 1 %}
+              <div class="message high">Please investigate this patient further.</div>
+            {% else %}
+              <div class="message low">No high-risk signal from this model.</div>
+            {% endif %}
+            <div class="warning"><strong>Warning:</strong> educational use only; not a medical diagnosis.</div>
+          </div>
+        </section>
+      </div>
+    {% endif %}
+
+    <div class="loading-overlay" id="loading-overlay" aria-hidden="true">
+      <div class="loading-card" role="status" aria-live="polite">
+        <div class="loading-spinner" aria-hidden="true"></div>
+        <h2 class="loading-title">Prediction is processing</h2>
+        <p class="loading-text">Please wait while the model evaluates this patient's heart disease risk.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function closeResultModal() {
+      const modal = document.getElementById("result-modal");
+      if (modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "Escape") {
+        closeResultModal();
+      }
+    });
+
+    const predictionForm = document.getElementById("prediction-form");
+    const loadingOverlay = document.getElementById("loading-overlay");
+
+    if (predictionForm && loadingOverlay) {
+      predictionForm.addEventListener("submit", function() {
+        loadingOverlay.classList.add("visible");
+        loadingOverlay.setAttribute("aria-hidden", "false");
+      });
+    }
+  </script>
+</body>
+</html>
