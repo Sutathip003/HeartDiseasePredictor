@@ -238,6 +238,12 @@ Heart disease project/
 pip install -r requirements.txt
 ```
 
+For local training and notebook work, install the full development stack instead:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
 ## How To Run
 
 ### 1. Clean the raw data
@@ -283,13 +289,21 @@ http://localhost:5000
 
 ## Dependencies
 
+Runtime:
+
+- flask
+- numpy
+- pandas
+- scikit-learn
+
+Development and training:
+
 - pandas
 - numpy
 - matplotlib
 - seaborn
 - scikit-learn
 - jupyter
-- flask
 - xgboost
 
 ## Key Learnings
