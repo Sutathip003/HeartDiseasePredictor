@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import json
 import sys
+from typing import Any
 from pathlib import Path
 
-from flask import Flask, request, render_template, request
+from flask import Flask, render_template, request
 
 # Ensure local packages can be imported when running as script.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -97,25 +98,40 @@ def load_model_precision(path=MODEL_RESULTS_PATH):
     results = json.loads(path.read_text(encoding="utf-8"))
     return round(results["final_metrics"]["precision"] * 100, 1)
 
+
+def build_form_data(form: Any) -> dict:
+    """Normalize posted form values into the model input schema."""
+    form_data = {}
+    for field, _ in FEATURE_FIELDS:
+        value = form.get(field)
+        if value is None:
+            continue
+
+        if field in ["age", "trestbps", "chol", "thalch", "oldpeak"]:
+            form_data[field] = float(value)
+        elif field in ["fbs", "exang"]:
+            form_data[field] = value.strip().lower() in ["1", "true", "yes", "y"]
+        else:
+            form_data[field] = value.strip()
+
+    return form_data
+
+
 @app.route("/", methods=["GET", "POST"])
 def home():
     result = None
+    error_message = None
     if request.method == "POST":
-        form_data = {}
-        for field, _ in FEATURE_FIELDS:
-            value = request.form.get(field)
-            if value is None:
-                continue
-
-            if field in ["age", "trestbps", "chol", "thalch", "oldpeak"]:
-                form_data[field] = float(value)
-            elif field in ["fbs", "exang"]:
-                form_data[field] = value.strip().lower() in ["1", "true", "yes", "y"]
-            else:
-                form_data[field] = value.strip()
-
-        model = load_model()
-        result = predict_patient(form_data, model=model)
+        try:
+            form_data = build_form_data(request.form)
+            model = load_model()
+            result = predict_patient(form_data, model=model)
+        except Exception:
+            app.logger.exception("Prediction request failed.")
+            error_message = (
+                "Prediction could not be completed in the deployed environment. "
+                "Check the Vercel function logs for the full traceback."
+            )
 
     return render_template(
         "index.html",
@@ -129,6 +145,7 @@ def home():
         model_recall=load_model_recall(),
         model_precision=load_model_precision(),
         result=result,
+        error_message=error_message,
     )
 
 

@@ -100,6 +100,12 @@
       </div>
     </form>
 
+    {% if error_message %}
+      <section class="error-banner" role="alert">
+        {{ error_message }}
+      </section>
+    {% endif %}
+
     {% if result %}
       <div class="modal-backdrop" id="result-modal">
         <section class="modal-card result" role="dialog" aria-modal="true" aria-labelledby="result-modal-title">
