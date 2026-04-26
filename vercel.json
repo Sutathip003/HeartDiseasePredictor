@@ -1,9 +1,3 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "functions": {
-    "app/app.py": {
-      "excludeFiles": "{.git/**,.venv/**,.vercel/**,.virtual_documents/**,.ipynb_checkpoints/**,notebooks/**,reports/**,data/**,src/data/**,src/features/**,src/models/heart_disease_train_model.py,**/__pycache__/**}"
-    }
-  }
+  "$schema": "https://openapi.vercel.sh/vercel.json"
 }
-
