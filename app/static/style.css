@@ -353,6 +353,7 @@ button:hover {
   padding: 20px;
   background: rgba(15, 23, 42, 0.5);
   z-index: 1000;
+  box-sizing: border-box;
 }
 
 .loading-overlay {
@@ -364,6 +365,7 @@ button:hover {
   padding: 20px;
   background: rgba(15, 23, 42, 0.45);
   z-index: 1100;
+  box-sizing: border-box;
 }
 
 .loading-overlay.visible {
@@ -371,7 +373,8 @@ button:hover {
 }
 
 .loading-card {
-  width: min(420px, 100%);
+  width: min(420px, calc(100vw - 40px));
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 28px;
   background: var(--panel);
@@ -404,7 +407,8 @@ button:hover {
 }
 
 .modal-card {
-  width: min(560px, 100%);
+  width: min(560px, calc(100vw - 40px));
+  max-width: 100%;
   border: 1px solid var(--line);
   border-radius: 28px;
   background: var(--panel);
@@ -572,6 +576,17 @@ button:hover {
 
   .metric-value {
     font-size: 20px;
+  }
+
+  .modal-backdrop,
+  .loading-overlay {
+    padding: 12px;
+  }
+
+  .modal-card,
+  .loading-card {
+    width: calc(100vw - 24px);
+    border-radius: 22px;
   }
 
   .workspace-card {
