@@ -110,15 +110,15 @@ h1 {
 .metric-row {
   flex-wrap: wrap;
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .metric-pill {
-  min-width: 152px;
+  min-width: 128px;
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: 18px;
   background: var(--panel);
-  padding: 14px 16px;
+  padding: 10px 12px;
   text-align: left;
   box-shadow: var(--shadow-soft);
 }
@@ -132,8 +132,8 @@ h1 {
 }
 
 .metric-value {
-  margin-top: 6px;
-  font-size: 28px;
+  margin-top: 4px;
+  font-size: 22px;
   font-weight: 700;
 }
 
@@ -161,7 +161,7 @@ h1 {
 .workspace-intro h2 {
   margin: 0;
   color: var(--muted);
-  font-size: clamp(16px, 2vw, 22px);
+  font-size: clamp(15px, 1.8vw, 20px);
   line-height: 1.35;
   font-weight: 400;
 }
@@ -557,13 +557,30 @@ button:hover {
     font-size: 26px;
   }
 
+  .metric-row {
+    gap: 8px;
+  }
+
+  .metric-pill {
+    min-width: 110px;
+    padding: 8px 10px;
+  }
+
+  .metric-label {
+    font-size: 11px;
+  }
+
+  .metric-value {
+    font-size: 20px;
+  }
+
   .workspace-card {
     border-radius: 24px;
     padding: 14px;
   }
 
   .workspace-intro h2 {
-    font-size: 16px;
+    font-size: 15px;
   }
 
   .workspace-intro p {
