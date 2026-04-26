@@ -79,7 +79,7 @@ h1 {
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   align-items: stretch;
 }
@@ -93,8 +93,7 @@ h1 {
 }
 
 .personal-panel,
-.clinical-panel,
-.reference-panel {
+.clinical-panel {
   height: 100%;
 }
 
@@ -121,6 +120,11 @@ label {
   color: #314056;
   font-size: 13px;
   font-weight: 700;
+}
+
+.label-reference {
+  color: var(--muted);
+  font-weight: 600;
 }
 
 input,
@@ -158,26 +162,9 @@ input::placeholder {
   color: #8b97aa;
 }
 
-.range-row {
-  display: flex;
-  align-items: center;
-  min-height: 64px;
-  border-top: 1px solid var(--line-soft);
-  font-size: 15px;
-}
-
-.range-row:first-of-type {
-  border-top: 0;
-}
-
-.range-value {
-  font-weight: 800;
-  line-height: 1.45;
-}
-
 .actions-row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   margin-top: 50px;
 }
@@ -195,7 +182,7 @@ input::placeholder {
 
 .actions {
   display: flex;
-  grid-column: 2;
+  grid-column: 1 / -1;
   justify-content: center;
   padding-top: 12px;
 }

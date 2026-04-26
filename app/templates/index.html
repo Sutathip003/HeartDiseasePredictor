@@ -59,7 +59,10 @@
           <h2 class="section-title">Clinical Information</h2>
           {% for name, input_type in clinical_fields %}
             <div class="field">
-              <label for="{{ name }}">{{ field_labels[name] }}</label>
+              <label for="{{ name }}">
+                {{ field_labels[name] }}
+                <span class="label-reference">({{ normal_ranges[name] }})</span>
+              </label>
               {% if input_type == "select" %}
                 <select name="{{ name }}" id="{{ name }}" required>
                   <option value="" disabled selected>Select {{ field_labels[name].lower() }}</option>
@@ -82,15 +85,6 @@
             </div>
           {% endfor %}
         </section>
-
-        <aside class="panel reference-panel">
-          <h2 class="section-title">Reference Values</h2>
-          {% for name, _ in clinical_fields %}
-            <div class="range-row">
-              <span class="range-value">{{ normal_ranges[name] }}</span>
-            </div>
-          {% endfor %}
-        </aside>
       </div>
 
       <div class="actions-row">
