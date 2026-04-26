@@ -28,6 +28,7 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -553,12 +554,31 @@ button:hover {
 
 @media (max-width: 560px) {
   .page {
-    width: min(100vw - 20px, 1120px);
-    padding-top: 12px;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 12px 12px 18px;
   }
 
   h1 {
     font-size: 26px;
+  }
+
+  .header {
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .header-copy,
+  .metric-row,
+  .workspace-card,
+  .error-banner {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .metric-row {
+    justify-content: center;
   }
 
   .metric-row {
@@ -614,6 +634,11 @@ button:hover {
     gap: 10px 12px;
   }
 
+  .field-grid-blood,
+  .field-grid-personal {
+    grid-template-columns: 1fr;
+  }
+
   .section-title {
     margin-bottom: 12px;
   }
@@ -627,6 +652,10 @@ button:hover {
     width: 100%;
     min-width: 0;
     height: 48px;
+  }
+
+  .actions {
+    width: 100%;
   }
 
   .modal-header,
