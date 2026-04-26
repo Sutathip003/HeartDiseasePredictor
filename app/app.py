@@ -33,18 +33,21 @@ PERSONAL_FIELDS = [
     ("dataset", "select"),
 ]
 
-CLINICAL_FIELDS = [
-    ("cp", "select"),
-    ("trestbps", "number"),
+BLOOD_TESTING_FIELDS = [
     ("chol", "number"),
     ("fbs", "select"),
+]
+
+PHYSICAL_TESTING_FIELDS = [
+    ("cp", "select"),
     ("restecg", "select"),
-    ("thalch", "number"),
     ("exang", "select"),
+    ("trestbps", "number"),
+    ("thalch", "number"),
     ("oldpeak", "number"),
 ]
 
-FEATURE_FIELDS = PERSONAL_FIELDS + CLINICAL_FIELDS
+FEATURE_FIELDS = PERSONAL_FIELDS + BLOOD_TESTING_FIELDS + PHYSICAL_TESTING_FIELDS
 
 SELECT_OPTIONS = {
     "sex": ["Male", "Female"],
@@ -69,7 +72,7 @@ NORMAL_RANGES = {
 FIELD_LABELS = {
     "age": "Age",
     "sex": "Sex",
-    "dataset": "Dataset",
+    "dataset": "Location",
     "cp": "CP",
     "trestbps": "Trestbps",
     "chol": "Chol",
@@ -137,7 +140,8 @@ def home():
         "index.html",
         features=FEATURE_FIELDS,
         personal_fields=PERSONAL_FIELDS,
-        clinical_fields=CLINICAL_FIELDS,
+        blood_testing_fields=BLOOD_TESTING_FIELDS,
+        physical_testing_fields=PHYSICAL_TESTING_FIELDS,
         field_labels=FIELD_LABELS,
         select_options=SELECT_OPTIONS,
         normal_ranges=NORMAL_RANGES,

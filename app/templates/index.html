@@ -8,10 +8,12 @@
 </head>
 <body>
   <main class="page">
+    <div class="page-glow page-glow-left" aria-hidden="true"></div>
+    <div class="page-glow page-glow-right" aria-hidden="true"></div>
     <header class="header">
-      <div>
+      <div class="header-copy">
         <h1>Heart Disease Predictor</h1>
-        <p class="subtitle">Educational screening support for heart disease risk prediction.</p>
+        <p class="subtitle">A clinical decision and educational support system for heart disease risk screening.</p>
       </div>
       <div class="metric-row">
         <div class="metric-pill">
@@ -25,66 +27,114 @@
       </div>
     </header>
 
-    <form method="post" id="prediction-form">
-      <div class="form-grid">
-        <section class="panel personal-panel">
-          <h2 class="section-title">Personal Information</h2>
-          {% for name, input_type in personal_fields %}
-            <div class="field">
-              <label for="{{ name }}">{{ field_labels[name] }}</label>
-              {% if input_type == "select" %}
-                <select name="{{ name }}" id="{{ name }}" required>
-                  <option value="" disabled selected>Select {{ field_labels[name].lower() }}</option>
-                  {% for option in select_options[name] %}
-                    <option value="{{ option }}">{{ option }}</option>
-                  {% endfor %}
-                </select>
-              {% else %}
-                <input
-                  type="{{ input_type }}"
-                  name="{{ name }}"
-                  id="{{ name }}"
-                  placeholder="Enter {{ field_labels[name].lower() }}"
-                  {% for attr_name, attr_value in input_attributes.get(name, {}).items() %}
-                    {{ attr_name }}="{{ attr_value }}"
-                  {% endfor %}
-                  required
-                >
-              {% endif %}
-            </div>
-          {% endfor %}
-        </section>
+    <section class="workspace-card">
+      <div class="workspace-intro">
+        <div>
+          <h2>Enter patient information to generate a heart disease risk assessment</h2>
+        </div>
+      </div>
 
-        <section class="panel clinical-panel">
-          <h2 class="section-title">Clinical Information</h2>
-          {% for name, input_type in clinical_fields %}
-            <div class="field">
-              <label for="{{ name }}">
-                {{ field_labels[name] }}
-                <span class="label-reference">({{ normal_ranges[name] }})</span>
-              </label>
-              {% if input_type == "select" %}
-                <select name="{{ name }}" id="{{ name }}" required>
-                  <option value="" disabled selected>Select {{ field_labels[name].lower() }}</option>
-                  {% for option in select_options[name] %}
-                    <option value="{{ option }}">{{ option }}</option>
-                  {% endfor %}
-                </select>
-              {% else %}
-                <input
-                  type="{{ input_type }}"
-                  name="{{ name }}"
-                  id="{{ name }}"
-                  placeholder="Enter {{ field_labels[name].lower() }}"
-                  {% for attr_name, attr_value in input_attributes.get(name, {}).items() %}
-                    {{ attr_name }}="{{ attr_value }}"
-                  {% endfor %}
-                  required
-                >
-              {% endif %}
+      <form method="post" id="prediction-form">
+      <div class="form-grid">
+        <div class="form-column form-column-left">
+          <section class="panel personal-panel">
+            <h2 class="section-title">Personal Information</h2>
+            <div class="field-grid field-grid-personal">
+            {% for name, input_type in personal_fields %}
+              <div class="field">
+                <label for="{{ name }}">{{ field_labels[name] }}</label>
+                {% if input_type == "select" %}
+                  <select name="{{ name }}" id="{{ name }}" required>
+                    <option value="" disabled selected>Select {{ field_labels[name].lower() }}</option>
+                    {% for option in select_options[name] %}
+                      <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                  <input
+                    type="{{ input_type }}"
+                    name="{{ name }}"
+                    id="{{ name }}"
+                    placeholder="Enter {{ field_labels[name].lower() }}"
+                    {% for attr_name, attr_value in input_attributes.get(name, {}).items() %}
+                      {{ attr_name }}="{{ attr_value }}"
+                    {% endfor %}
+                    required
+                  >
+                {% endif %}
+              </div>
+            {% endfor %}
             </div>
-          {% endfor %}
-        </section>
+          </section>
+
+          <section class="panel blood-panel">
+            <h2 class="section-title">Blood Testing</h2>
+            <div class="field-grid field-grid-blood">
+            {% for name, input_type in blood_testing_fields %}
+              <div class="field">
+                <label for="{{ name }}">
+                  {{ field_labels[name] }}
+                  <span class="label-reference">({{ normal_ranges[name] }})</span>
+                </label>
+                {% if input_type == "select" %}
+                  <select name="{{ name }}" id="{{ name }}" required>
+                    <option value="" disabled selected>Select {{ field_labels[name].lower() }}</option>
+                    {% for option in select_options[name] %}
+                      <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                  <input
+                    type="{{ input_type }}"
+                    name="{{ name }}"
+                    id="{{ name }}"
+                    placeholder="Enter {{ field_labels[name].lower() }}"
+                    {% for attr_name, attr_value in input_attributes.get(name, {}).items() %}
+                      {{ attr_name }}="{{ attr_value }}"
+                    {% endfor %}
+                    required
+                  >
+                {% endif %}
+              </div>
+            {% endfor %}
+            </div>
+          </section>
+        </div>
+
+        <div class="form-column form-column-right">
+          <section class="panel physical-panel">
+            <h2 class="section-title">Physical Testing</h2>
+            <div class="field-grid field-grid-physical">
+            {% for name, input_type in physical_testing_fields %}
+              <div class="field">
+                <label for="{{ name }}">
+                  {{ field_labels[name] }}
+                  <span class="label-reference">({{ normal_ranges[name] }})</span>
+                </label>
+                {% if input_type == "select" %}
+                  <select name="{{ name }}" id="{{ name }}" required>
+                    <option value="" disabled selected>Select {{ field_labels[name].lower() }}</option>
+                    {% for option in select_options[name] %}
+                      <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                  </select>
+                {% else %}
+                  <input
+                    type="{{ input_type }}"
+                    name="{{ name }}"
+                    id="{{ name }}"
+                    placeholder="Enter {{ field_labels[name].lower() }}"
+                    {% for attr_name, attr_value in input_attributes.get(name, {}).items() %}
+                      {{ attr_name }}="{{ attr_value }}"
+                    {% endfor %}
+                    required
+                  >
+                {% endif %}
+              </div>
+            {% endfor %}
+            </div>
+          </section>
+        </div>
       </div>
 
       <div class="actions-row">
@@ -92,7 +142,8 @@
           <button type="submit">Predict</button>
         </div>
       </div>
-    </form>
+      </form>
+    </section>
 
     {% if error_message %}
       <section class="error-banner" role="alert">
