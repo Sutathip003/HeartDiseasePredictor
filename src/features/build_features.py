@@ -1,11 +1,10 @@
-""" Step 5 - Build features"""
+"""Build features for training and deployment."""
 from __future__ import annotations
 
 from datetime import datetime
 import json
 import pickle
 from pathlib import Path
-from datetime import datetime
 
 import pandas as pd
 from sklearn.compose import ColumnTransformer
@@ -30,10 +29,6 @@ REQUIRED_COLUMNS = DROP_COLUMNS + NUMERIC_FEATURES + CATEGORICAL_FEATURES + [TAR
 
 def load_clean_data(path: Path = CLEAN_DATA_PATH) -> pd.DataFrame:
     return pd.read_csv(path)
-
-#Check data
-clean_data = load_clean_data()
-# print(clean_data.head())
 
 def validate_clean_data(df: pd.DataFrame) -> None:
     missing_columns = [column for column in REQUIRED_COLUMNS if column not in df.columns]

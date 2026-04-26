@@ -8,6 +8,4 @@ notebooks/
 reports/
 data/
 src/data/
-src/features/
 src/models/heart_disease_train_model.py
-
