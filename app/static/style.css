@@ -410,6 +410,7 @@ button:hover {
 .modal-card {
   width: min(560px, calc(100vw - 40px));
   max-width: 100%;
+  margin: 0 auto;
   border: 1px solid var(--line);
   border-radius: 28px;
   background: var(--panel);
@@ -554,10 +555,14 @@ button:hover {
 
 @media (max-width: 560px) {
   .page {
-    width: 100%;
-    max-width: 420px;
+    width: min(calc(100vw - 24px), 420px);
+    max-width: none;
     margin: 0 auto;
     padding: 12px 12px 18px;
+  }
+
+  .page-glow {
+    display: none;
   }
 
   h1 {
@@ -567,6 +572,10 @@ button:hover {
   .header {
     gap: 14px;
     margin-bottom: 12px;
+  }
+
+  .header-copy {
+    max-width: none;
   }
 
   .header-copy,
@@ -605,8 +614,20 @@ button:hover {
 
   .modal-card,
   .loading-card {
-    width: calc(100vw - 24px);
+    width: min(360px, calc(100vw - 24px));
+    max-width: calc(100vw - 24px);
     border-radius: 22px;
+  }
+
+  .modal-header {
+    gap: 8px;
+  }
+
+  .modal-close {
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+    font-size: 18px;
   }
 
   .workspace-card {
