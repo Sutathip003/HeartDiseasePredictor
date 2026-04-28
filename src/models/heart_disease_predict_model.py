@@ -21,7 +21,6 @@ DEFAULT_THRESHOLD = 0.30
 EXPECTED_FEATURES = [
     "age",
     "sex",
-    "dataset",
     "cp",
     "trestbps",
     "chol",
@@ -33,12 +32,6 @@ EXPECTED_FEATURES = [
 ]
 NUMERIC_FEATURES = ["age", "trestbps", "chol", "thalch", "oldpeak"]
 BOOLEAN_FEATURES = ["fbs", "exang"]
-ALLOWED_DATASETS = {
-    "cleveland": "Cleveland",
-    "hungary": "Hungary",
-    "switzerland": "Switzerland",
-    "va long beach": "VA Long Beach",
-}
 
 
 def load_model(path: Path = MODEL_PATH):
@@ -82,10 +75,6 @@ def normalize_input_row(row: dict) -> dict:
         sex = str(normalized["sex"]).strip().lower()
         normalized["sex"] = "Male" if sex in ["male", "m"] else "Female"
 
-    if "dataset" in normalized:
-        dataset = str(normalized["dataset"]).strip().lower()
-        normalized["dataset"] = ALLOWED_DATASETS.get(dataset, normalized["dataset"])
-
     for bool_field in BOOLEAN_FEATURES:
         value = normalized[bool_field]
         if isinstance(value, str):
@@ -122,7 +111,6 @@ def main():
     sample = {
         "age": 58,
         "sex": "Male",
-        "dataset": "Cleveland",
         "cp": "typical angina",
         "trestbps": 150,
         "chol": 260,

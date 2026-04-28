@@ -30,7 +30,6 @@ MODEL_RESULTS_PATH = MODELS_DIR / "heart_disease_model_results.json"
 PERSONAL_FIELDS = [
     ("age", "number"),
     ("sex", "select"),
-    ("dataset", "select"),
 ]
 
 BLOOD_TESTING_FIELDS = [
@@ -51,7 +50,6 @@ FEATURE_FIELDS = PERSONAL_FIELDS + BLOOD_TESTING_FIELDS + PHYSICAL_TESTING_FIELD
 
 SELECT_OPTIONS = {
     "sex": ["Male", "Female"],
-    "dataset": ["Cleveland", "Hungary", "Switzerland", "VA Long Beach"],
     "cp": ["asymptomatic", "atypical angina", "non-anginal", "typical angina"],
     "fbs": ["False", "True"],
     "restecg": ["lv hypertrophy", "normal", "st-t abnormality"],
@@ -72,7 +70,6 @@ NORMAL_RANGES = {
 FIELD_LABELS = {
     "age": "Age",
     "sex": "Sex",
-    "dataset": "Location",
     "cp": "CP",
     "trestbps": "Trestbps",
     "chol": "Chol",

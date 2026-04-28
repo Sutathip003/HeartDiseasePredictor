@@ -9,7 +9,7 @@ from pathlib import Path
 import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import FunctionTransformer, Pipeline
-from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
+from sklearn.preprocessing import OrdinalEncoder, StandardScaler
 
 #create file paths
 CLEAN_DATA_PATH = Path("data/processed/heart_disease_clean.csv")
@@ -19,12 +19,11 @@ FEATURE_PREPARATION_ARTIFACT_PATH = Path("models/heart_disease_feature_preparati
 FEATURE_METADATA_PATH = Path("models/heart_disease_feature_metadata.json")
 
 TARGET_COLUMN = "target"
-DROP_COLUMNS = ["id", "num"]
+DROP_COLUMNS = ["id", "num", "dataset"]
 NUMERIC_FEATURES = ['age', 'trestbps', 'chol', 'thalch', 'oldpeak']
-NOMINAL_FEATURES = ["dataset"]
 BINARY_FEATURES = ['sex', 'fbs', 'exang']
 ORDINAL_FEATURES = ['cp', 'restecg']
-CATEGORICAL_FEATURES = BINARY_FEATURES + NOMINAL_FEATURES + ORDINAL_FEATURES
+CATEGORICAL_FEATURES = BINARY_FEATURES + ORDINAL_FEATURES
 REQUIRED_COLUMNS = DROP_COLUMNS + NUMERIC_FEATURES + CATEGORICAL_FEATURES + [TARGET_COLUMN]
 
 def load_clean_data(path: Path = CLEAN_DATA_PATH) -> pd.DataFrame:
@@ -85,18 +84,6 @@ def build_feature_preparation_pipeline() -> ColumnTransformer:
         ]
     )
 
-    # Nominal (One-hot)
-    nominal_pipeline = Pipeline(
-        steps=[
-            (
-                "encoder",OneHotEncoder(
-                    handle_unknown="ignore",
-                    sparse_output=False,
-                ),
-            ),
-        ]
-    )
-
     # # Ordinal Encoder
     ordinal_pipeline = Pipeline(
         steps=[
@@ -109,7 +96,6 @@ def build_feature_preparation_pipeline() -> ColumnTransformer:
         transformers=[
             ("num", numeric_pipeline, NUMERIC_FEATURES),
             ("binary", binary_pipeline, BINARY_FEATURES),
-            ("nominal", nominal_pipeline, NOMINAL_FEATURES),
             ("ordinal", ordinal_pipeline, ORDINAL_FEATURES),
         ],
         remainder="drop",
@@ -122,10 +108,6 @@ def build_feature_preparation_pipeline() -> ColumnTransformer:
     
     # bin_data = clean_data[BINARY_FEATURES]
     # bi_encoded = binary_pipeline.fit_transform(bin_data)
-    
-    # nom_data = clean_data[NOMINAL_FEATURES]
-    # encoded = nominal_pipeline.fit_transform(nom_data)
-    # feature_names = nominal_pipeline.named_steps["encoder"].get_feature_names_out(NOMINAL_FEATURES)
     
     # ord_data = clean_data[ORDINAL_FEATURES]
     # mapped = ordinal_pipeline.fit_transform(ord_data)
@@ -142,12 +124,6 @@ def build_feature_preparation_pipeline() -> ColumnTransformer:
     # print("After:")
     # print(pd.DataFrame(bi_encoded, columns=BINARY_FEATURES).head())
     
-    # print("===== NOMINAL =====")
-    # print("Before:")
-    # print(nom_data.head())
-    # print("After:")
-    # print(pd.DataFrame(encoded, columns=feature_names).head())
-        
     # print("===== ORDINAL =====")
     # print("Before:")
     # print(ord_data.head())
@@ -223,7 +199,6 @@ def save_feature_outputs(
 
         "numeric_features": NUMERIC_FEATURES,
         "binary_features": BINARY_FEATURES,
-        "nominal_features": NOMINAL_FEATURES,
         "ordinal_features": ORDINAL_FEATURES,
 
         "rows": int(prepared_features.shape[0]),
@@ -235,7 +210,7 @@ def save_feature_outputs(
             "Dropped num because the binary target already captures the diagnosis outcome.",
             "Scaled numeric features to make linear models more stable and comparable.",
             "Preserved binary features as-is for interpretability.",
-            "One-hot encoded nominal features (dataset) to avoid artificial order.",
+            "Excluded dataset/source-hospital from training to avoid location-driven predictions.",
             "Ordinal encoded ordinal clinical values (cp, restecg, slope, thal) to keep ordinal semantics.",
             "Did not create extra derived clinical features to avoid over-engineering.",
         ],
