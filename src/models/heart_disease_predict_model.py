@@ -17,7 +17,7 @@ import pandas as pd
 MODELS_DIR = PROJECT_ROOT / "models"
 MODEL_PATH = MODELS_DIR / "heart_disease_model.pkl"
 MODEL_RESULTS_PATH = MODELS_DIR / "heart_disease_model_results.json"
-DEFAULT_THRESHOLD = 0.30
+DEFAULT_THRESHOLD = 0.23
 EXPECTED_FEATURES = [
     "age",
     "sex",
@@ -95,14 +95,25 @@ def predict_patient(patient: dict, model=None, threshold: float | None = None) -
     feature_df = pd.DataFrame([patient_data], columns=EXPECTED_FEATURES)
 
     probability = float(model.predict_proba(feature_df)[0, 1])
-    predicted_class = int(probability >= threshold)
+    if probability >= 0.50:
+        predicted_class = 1
+        label = "Disease"
+        risk_level = "High risk"
+    elif probability >= threshold and probability < 0.50:
+        predicted_class = 1
+        label = "High risk of heart disease"
+        risk_level = "Elevated risk"
+    else:
+        predicted_class = 0
+        label = "No Disease"
+        risk_level = "Low risk"
 
     return {
         "prediction": predicted_class,
-        "label": "Disease" if predicted_class == 1 else "No Disease",
+        "label": label,
         "probability": probability,
         "threshold": threshold,
-        "risk_level": "High risk" if predicted_class == 1 else "Low risk",
+        "risk_level": risk_level,
         "note": "Educational decision support only; Not a medical diagnosis.",
     }
 

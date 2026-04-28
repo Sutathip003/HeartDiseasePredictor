@@ -10,8 +10,8 @@
   --accent: #18b4a2;
   --accent-dark: #0d9687;
   --accent-soft: #e6f7f3;
-  --danger: #bf4518;
-  --danger-bg: #fff4ee;
+  --danger: #dc2626;
+  --danger-bg: #fff0f0;
   --ok: #1b6a42;
   --ok-bg: #eefaf3;
   --shadow: 0 22px 60px rgba(34, 83, 81, 0.12);
@@ -491,6 +491,18 @@ button:hover {
   font-weight: 700;
 }
 
+.stat-value-danger {
+  color: var(--danger);
+}
+
+.stat-value-warning {
+  color: #cc6a11;
+}
+
+.stat-value-safe {
+  color: var(--ok);
+}
+
 .message {
   border-radius: 18px;
   padding: 15px 16px;
@@ -500,6 +512,11 @@ button:hover {
 .message.high {
   background: var(--danger-bg);
   color: var(--danger);
+}
+
+.message.moderate {
+  background: #fff6ea;
+  color: #cc6a11;
 }
 
 .message.low {
@@ -662,6 +679,11 @@ button:hover {
 
   .section-title {
     margin-bottom: 12px;
+  }
+
+  .label-reference {
+    display: block;
+    margin-top: 2px;
   }
 
   input,

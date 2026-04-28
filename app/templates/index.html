@@ -152,6 +152,7 @@
     {% endif %}
 
     {% if result %}
+      {% set result_tone = 'danger' if result.label == 'Disease' else 'warning' if result.label == 'High risk of heart disease' else 'safe' %}
       <div class="modal-backdrop" id="result-modal">
         <section class="modal-card result" role="dialog" aria-modal="true" aria-labelledby="result-modal-title">
           <div class="modal-header">
@@ -162,15 +163,17 @@
             <div class="result-grid">
               <div class="result-stat">
                 <div class="stat-label">Prediction</div>
-                <div class="stat-value">{{ result.label }}</div>
+                <div class="stat-value stat-value-{{ result_tone }}">{{ result.label }}</div>
               </div>
               <div class="result-stat">
                 <div class="stat-label">Disease Probability</div>
-                <div class="stat-value">{{ '%.0f' % (result.probability * 100) }}%</div>
+                <div class="stat-value stat-value-{{ result_tone }}">{{ '%.0f' % (result.probability * 100) }}%</div>
               </div>
             </div>
-            {% if result.prediction == 1 %}
-              <div class="message high">Please investigate this patient further.</div>
+            {% if result.label == 'Disease' %}
+              <div class="message high">Screening positive for heart disease risk. Further clinical evaluation is recommended.</div>
+            {% elif result.label == 'High risk of heart disease' %}
+              <div class="message moderate">Elevated risk of heart disease detected. Clinical review is advised.</div>
             {% else %}
               <div class="message low">No high-risk signal from this model.</div>
             {% endif %}
