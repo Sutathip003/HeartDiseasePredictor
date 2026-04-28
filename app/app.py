@@ -62,22 +62,22 @@ NORMAL_RANGES = {
     "chol": "< 200 mg/dL",
     "fbs": "False or <= 120 mg/dL",
     "restecg": "normal",
-    "thalch": "varies by age ~ 150-210 bpm",
+    "thalch": "~ 150-210 bpm",
     "exang": "False",
-    "oldpeak": "~ 0-1.5 (exercise-induced ST depression)",
+    "oldpeak": "< 1.0 mm",
 }
 
 FIELD_LABELS = {
     "age": "Age",
     "sex": "Sex",
-    "cp": "CP",
-    "trestbps": "Trestbps",
-    "chol": "Chol",
-    "fbs": "FBS",
-    "restecg": "Restecg",
-    "thalch": "Thalch",
-    "exang": "Exang",
-    "oldpeak": "Oldpeak",
+    "cp": "Chest Pain Type",
+    "trestbps": "Resting Blood Pressure (Systolic, mm Hg)",
+    "chol": "Serum Cholesterol",
+    "fbs": "Fasting Blood Sugar",
+    "restecg": "Resting ECG",
+    "thalch": "Max Heart Rate",
+    "exang": "Exercise Induced Angina",
+    "oldpeak": "ST Depression",
 }
 
 INPUT_ATTRIBUTES = {

@@ -101,35 +101,6 @@ def build_feature_preparation_pipeline() -> ColumnTransformer:
         remainder="drop",
     )
     
-    ## Check the output of each pipeline step
-      
-    # num_data = clean_data[NUMERIC_FEATURES]
-    # scaled = numeric_pipeline.fit_transform(num_data)
-    
-    # bin_data = clean_data[BINARY_FEATURES]
-    # bi_encoded = binary_pipeline.fit_transform(bin_data)
-    
-    # ord_data = clean_data[ORDINAL_FEATURES]
-    # mapped = ordinal_pipeline.fit_transform(ord_data)
-    
-    # print("===== NUMERIC =====")
-    # print("Before:")
-    # print(num_data.head())
-    # print("After:")
-    # print(pd.DataFrame(scaled, columns=NUMERIC_FEATURES).head())
-    
-    # print("===== BINARY =====")
-    # print("Before:")
-    # print(bin_data.head())
-    # print("After:")
-    # print(pd.DataFrame(bi_encoded, columns=BINARY_FEATURES).head())
-    
-    # print("===== ORDINAL =====")
-    # print("Before:")
-    # print(ord_data.head())
-    # print("After:")
-    # print(pd.DataFrame(mapped, columns=ORDINAL_FEATURES).head())
-
     return feature_preparation
 
 # print(build_feature_preparation_pipeline())
