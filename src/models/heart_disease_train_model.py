@@ -23,7 +23,6 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
-from xgboost import XGBClassifier
 
 
 # ==============================
@@ -44,6 +43,7 @@ MODEL_OUTPUT_PATH = Path("models/heart_disease_model.pkl")
 MODEL_RESULTS_PATH = Path("models/heart_disease_model_results.json")
 
 THRESHOLD_CANDIDATES = np.arange(0.10, 0.91, 0.01)
+DEPLOYMENT_THRESHOLD = 0.23
 
 
 # ==============================
@@ -126,6 +126,18 @@ def choose_model_and_threshold(threshold_evaluations):
     return best["model"], best
 
 
+def choose_best_model_at_fixed_threshold(evaluated_models):
+    return max(
+        evaluated_models.items(),
+        key=lambda item: (
+            item[1]["f2"],
+            item[1]["recall"],
+            item[1]["f1"],
+            item[1]["precision"],
+        ),
+    )
+
+
 # ==============================
 # MAIN
 # ==============================
@@ -150,11 +162,6 @@ def main():
     X_train = preprocessor.fit_transform(X_train_raw)
     X_test = preprocessor.transform(X_test_raw)
 
-    # Handle imbalance
-    neg = (y_train == 0).sum()
-    pos = (y_train == 1).sum()
-    scale_pos_weight = neg / pos if pos else 1
-
     # ==============================
     # MODELS
     # ==============================
@@ -170,19 +177,8 @@ def main():
             class_weight="balanced",
             random_state=42,
         ),
-        "xgboost": XGBClassifier(
-            n_estimators=200,
-            learning_rate=0.05,
-            max_depth=3,
-            subsample=0.8,
-            colsample_bytree=0.8,
-            eval_metric="logloss",
-            scale_pos_weight=scale_pos_weight,
-            random_state=42,
-        ),
     }
 
-    threshold_evaluations = {}
     evaluated_models = {}
 
     # ==============================
@@ -194,41 +190,24 @@ def main():
 
         model.fit(X_train, y_train)
 
-        # 1. evaluate thresholds
-        threshold_results = evaluate_thresholds(model, X_test, y_test)
-        threshold_evaluations[name] = threshold_results
-
-        # 2. choose best threshold for this model
-        best_threshold = choose_threshold(threshold_results)["threshold"]
-
-        # 3. evaluate using that threshold (FIX)
+        # Evaluate every model at the same deployment threshold.
         evaluated_models[name] = evaluate_with_threshold(
-            model, X_test, y_test, best_threshold
+            model, X_test, y_test, DEPLOYMENT_THRESHOLD
         )
 
-        print(f"Best threshold: {best_threshold}")
+        print(f"Deployment threshold: {DEPLOYMENT_THRESHOLD}")
         print(json.dumps(evaluated_models[name], indent=2))
 
     # ==============================
     # FINAL SELECTION
     # ==============================
-    best_model_name, best_result = choose_model_and_threshold(
-        threshold_evaluations
-    )
-
-    best_threshold = best_result["threshold"]
+    best_model_name, final_metrics = choose_best_model_at_fixed_threshold(evaluated_models)
+    best_threshold = DEPLOYMENT_THRESHOLD
     best_model = candidates[best_model_name]
 
     print("\n=== BEST MODEL ===")
     print(best_model_name)
     print(f"Threshold: {best_threshold}")
-
-    # ==============================
-    # FINAL EVALUATION (TRUE RESULT)
-    # ==============================
-    final_metrics = evaluate_with_threshold(
-        best_model, X_test, y_test, best_threshold
-    )
 
     # ==============================
     # TRAIN FINAL PIPELINE
