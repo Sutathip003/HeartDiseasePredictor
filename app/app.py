@@ -53,7 +53,7 @@ SELECT_OPTIONS = {
     "cp": ["asymptomatic", "atypical angina", "non-anginal", "typical angina"],
     "fbs": ["False", "True"],
     "restecg": ["lv hypertrophy", "normal", "st-t abnormality"],
-    "exang": ["False", "True"],
+    "exang": ["No", "Yes"],
 }
 
 NORMAL_RANGES = {
